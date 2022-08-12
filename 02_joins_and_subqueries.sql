@@ -27,6 +27,6 @@ WHERE facilities.name IN ('Tennis Court 2', 'Tennis Court 1') AND
       bookings.starttime < '2012-09-22'
 ORDER BY bookings.starttime;
 
--- 3
+-- 3.
 -- Produce a list of all members who have recommended another member. Ensure there are no duplicates in the list and that the results are ordered by (surname, firstname)
 

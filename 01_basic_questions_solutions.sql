@@ -1,8 +1,8 @@
--- 1
+-- 1.
 -- retrieve everything from the facilities table
 SELECT * FROM cd.facilities;
 
--- 2 
+-- 2.
 -- print out a list of all facilities and their cost to members
 SELECT name, membercost FROM cd.facilities;
 
