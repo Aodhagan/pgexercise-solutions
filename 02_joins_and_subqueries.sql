@@ -29,4 +29,44 @@ ORDER BY bookings.starttime;
 
 -- 3.
 -- Produce a list of all members who have recommended another member. Ensure there are no duplicates in the list and that the results are ordered by (surname, firstname)
+SELECT DISTINCT recs.firstname AS firstname,
+                recs.surname AS surname
+      FROM 
+            cd.members mems
+            INNER JOIN cd.members recs
+                  ON recs.memid = mems.recommendedby
+ORDER BY surname, firstname;
+
+-- 4.
+-- Output a list of all members including the individual who recommended them. Order results by (surname, firstname)
+SELECT
+      mem.firstname AS memfname,
+      mem.surname AS memsname,
+      rec.firstname AS recfname,
+      rec.surname AS recsname
+FROM 
+      cd.members mem
+      LEFT JOIN cd.members rec
+            ON rec.memid = mem.recommendedby
+ORDER BY mem.surname, mem.firstname;
+
+-- 5.
+-- Produce a list of all members who have used a tennis court which includes the name of the court and the 1st and surname of the member as a single column. No duplicate data and order by member name followed by facility name
+SELECT DISTINCT 
+      CONCAT(mem.firstname, ' ', mem.surname) AS mem_name,
+      fac.name
+FROM cd.members mem
+      INNER JOIN cd.bookings bk
+      ON mem.memid = bk.memid
+      INNER JOIN cd.facilities fac
+      ON fac.facid = bk.facid
+WHERE fac.name LIKE 'Tennis%'
+ORDER BY mem_name, fac.name;
+
+-- 6.
+-- Produce a list of bookings on the day '2012-09-14' which will cost a member or guest more than $30. Guest ID is always "0". Include the name of the facility, the name of the member formatted as a single column and the cost. Order in the sending cost and do not use subqueries.
+
+
+
+SELECT * FROM members
 
