@@ -63,6 +63,17 @@ FROM cd.members mem
 WHERE fac.name LIKE 'Tennis%'
 ORDER BY mem_name, fac.name;
 
+-- solution 2
+SELECT DISTINCT mems.firstname || ' ' || mems.surname AS member, facs.name AS facility
+FROM 
+      cd.members mems
+      INNER JOIN cd.bookings bks
+            ON mems.memid = bks.memid
+      INNER JOIN cd.facilities facs
+            ON bks.facid = facs.facid
+WHERE
+      facs.name IN ('Tennis Court 2', 'Tennis Court 1')
+ORDER BY member, facility;
 -- 6.
 -- Produce a list of bookings on the day '2012-09-14' which will cost a member or guest more than $30. Guest ID is always "0". Include the name of the facility, the name of the member formatted as a single column and the cost. Order in the sending cost and do not use subqueries.
 
