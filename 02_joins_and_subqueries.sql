@@ -76,8 +76,17 @@ WHERE
 ORDER BY member, facility;
 -- 6.
 -- Produce a list of bookings on the day '2012-09-14' which will cost a member or guest more than $30. Guest ID is always "0". Include the name of the facility, the name of the member formatted as a single column and the cost. Order in the sending cost and do not use subqueries.
-
-
-
-SELECT * FROM members
+SELECT 
+      CONCAT(mem.firstname, ' ', mem.surname) AS member,
+      fac.name AS facility,
+      COALESCE(fac.membercost, fac.guestcost) AS cost
+FROM cd.members mem
+      INNER JOIN cd.bookings bk
+      ON mem.memid = bk.memid
+      INNER JOIN cd.facilities fac
+      ON fac.facid = bk.facid
+WHERE (COALESCE(fac.membercost, fac.guestcost) > 30) AND
+      bk.starttime::date = '2012-09-14';
+-- look up how to join membercost and guestcost into one column, does not seem to be working properly.
+SELECT * FROM facilities;
 
