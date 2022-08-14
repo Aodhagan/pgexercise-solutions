@@ -75,18 +75,28 @@ WHERE
       facs.name IN ('Tennis Court 2', 'Tennis Court 1')
 ORDER BY member, facility;
 -- 6.
--- Produce a list of bookings on the day '2012-09-14' which will cost a member or guest more than $30. Guest ID is always "0". Include the name of the facility, the name of the member formatted as a single column and the cost. Order in the sending cost and do not use subqueries.
+-- Produce a list of bookings on the day '2012-09-14' which will cost a member or guest more than $30. 
+-- Guest ID is always "0". Include the 
+-- name of the facility, 
+-- the name of the member formatted as a single column and 
+-- the cost. 
+-- Order in desending cost and do not use subqueries.
 SELECT 
-      CONCAT(mem.firstname, ' ', mem.surname) AS member,
-      fac.name AS facility,
-      COALESCE(fac.membercost, fac.guestcost) AS cost
-FROM cd.members mem
-      INNER JOIN cd.bookings bk
-      ON mem.memid = bk.memid
-      INNER JOIN cd.facilities fac
-      ON fac.facid = bk.facid
-WHERE (COALESCE(fac.membercost, fac.guestcost) > 30) AND
-      bk.starttime::date = '2012-09-14';
--- look up how to join membercost and guestcost into one column, does not seem to be working properly.
-SELECT * FROM facilities;
+      CONCAT(mems.firstname, ' ', mems.surname) AS member,
+      facs.name AS facility,
+      CASE
+            WHEN mems.memid = 0 THEN bks.slots * facs.guestcost
+            ELSE bks.slots * facs.membercost 
+      END AS cost
+FROM cd.members mems
+      INNER JOIN cd.bookings bks
+      ON mems.memid = bks.memid
+      INNER JOIN cd.facilities facs
+      ON facs.facid = bks.facid
+WHERE bks.starttime >= '2012-09-14' AND  
+		bks.starttime < '2012-09-15' AND (
+      (mems.memid = 0 AND bks.slots * facs.guestcost > 30) OR
+      (mems.memid != 0 AND bks.slots * facs.membercost > 30)
+      )
+ORDER BY cost DESC;
 
