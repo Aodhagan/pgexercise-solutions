@@ -100,25 +100,6 @@ WHERE bks.starttime >= '2012-09-14' AND
       (mems.memid != 0 AND bks.slots * facs.membercost > 30)
       )
 ORDER BY cost DESC;
-      
-      
-      
-      
-      CASE
-            WHEN mems.memid = 0 THEN bks.slots * facs.guestcost
-            ELSE bks.slots * facs.membercost 
-      END AS cost
-FROM cd.members mems
-      INNER JOIN cd.bookings bks
-      ON mems.memid = bks.memid
-      INNER JOIN cd.facilities facs
-      ON facs.facid = bks.facid
-WHERE bks.starttime >= '2012-09-14' AND  
-		bks.starttime < '2012-09-15' AND (
-      (mems.memid = 0 AND bks.slots * facs.guestcost > 30) OR
-      (mems.memid != 0 AND bks.slots * facs.membercost > 30)
-      )
-ORDER BY cost DESC;
 
 -- 7.
 -- Produce a list of all members including the individual who recommended them without using any joins. Ensure there are no duplicates in the list and that the table is ordered by name
