@@ -100,3 +100,12 @@ WHERE bks.starttime >= '2012-09-14' AND
       )
 ORDER BY cost DESC;
 
+-- 7.
+-- Produce a list of all members including the individual who recommended them without using any joins. Ensure there are no duplicates in the list and that the table is ordered by name
+SELECT DISTINCT CONCAT(mems.firstname, ' ', mems.surname) AS member,
+      (SELECT recs.firstname || ' ' || recs.surname AS recommender
+            FROM cd.members recs
+            WHERE recs.memid = mems.recommendedby
+      )
+      FROM cd.members mems
+ORDER BY member;
